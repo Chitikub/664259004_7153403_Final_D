@@ -1,5 +1,15 @@
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const normalizeApiBase = () => {
+  const rawBase = (
+    import.meta.env.VITE_API_URL || "http://localhost:5000/api"
+  ).trim();
+
+  if (!rawBase) return "http://localhost:5000/api";
+
+  const normalized = rawBase.replace(/\/+$/, "");
+  return /\/api$/i.test(normalized) ? normalized : `${normalized}/api`;
+};
+
+const API_BASE_URL = normalizeApiBase();
 
 const request = async (path, options = {}) => {
   const response = await fetch(`${API_BASE_URL}${path}`, {
