@@ -16,7 +16,9 @@ const allowedOrigins = new Set(
     "http://127.0.0.1:5173",
     "http://localhost:5174",
     "http://127.0.0.1:5174",
+    "https://664259004-7153403-final-d.vercel.app",
     process.env.FRONTEND_URL,
+    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null,
   ].filter(Boolean),
 );
 
@@ -26,6 +28,8 @@ const isAllowedOrigin = (origin) => {
   if (allowedOrigins.has(origin)) return true;
 
   return (
+    /^https:\/\/.*\.vercel\.app$/.test(origin) ||
+    /^https:\/\/.*\.vercel\.app:\d+$/.test(origin) ||
     /^http:\/\/localhost:\d+$/.test(origin) ||
     /^http:\/\/127\.0\.0\.1:\d+$/.test(origin)
   );
